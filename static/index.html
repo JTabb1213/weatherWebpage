@@ -55,15 +55,14 @@
     </div>
 
     <script>
-      const apiKey = "cc6af3ddc3889911b9d0f06a9ce2734a";
       const apiUrl =
-        "https://api.openweathermap.org/data/2.5/weather?&units=imperial&q=";
+        "http://localhost:3000/api/weather?units=imperial&city=";
 
       const searchBox = document.querySelector("#cityInput");//searches for id cityInput and searchButton.
       const searchBtn = document.querySelector("#searchButton");
 
       async function checkWeather(city) {
-        const response = await fetch(apiUrl + city + `&appid=${apiKey}`);//make request to server
+        const response = await fetch(apiUrl + city);//make request to server
         var data = await response.json();//await for response. store response in data 
 
         console.log(data);
