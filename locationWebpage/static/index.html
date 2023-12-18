@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Location</title>
+
+    <style type="text/css">
+      #container {
+        /*
+        background-color: blue;
+        margin:0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        */
+        background-color: blue;
+        width: 30%;
+        padding: 10px;
+        /*margin: 0 auto;*/
+        text-align: center;
+
+
+      }
+      .weather{
+        color: grey;
+
+      }
+      .weather h1{
+        font-size:25px;
+      }
+      .weather h2, .weather h3, .weather h4, .weather h5, .weather h6{
+        font-size: 15px;
+      }
+
+      #searchButton{
+        color: green;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div id="container">
+      <div class="search">
+        <input type="text" id="cityInput" placeholder="enter city name" spellcheck="false">
+        <button id="searchButton">search</button>
+      </div>
+      <div class="location">
+        <h1 class="lat">&nbsp</h1>
+        <h2 class="lng">&nbsp</h2>
+      </div>
+    </div>
+
+    <script>
+      const apiUrl =
+        "http://localhost:3000/api/geolocation?address=";
+      
+      const searchBox = document.querySelector("#cityInput");//searches for id cityInput and searchButton.
+      const searchBtn = document.querySelector("#searchButton");
+
+      async function checkWeather(city) {
+        const response = await fetch(apiUrl + city);    
+        var data = await response.json();//await for response. store response in data
+
+        console.log(data);
+        document.querySelector(".lat").innerHTML = "lat: " + data.results[0].geometry.location.lat;
+        document.querySelector(".lng").innerHTML = "lng: " + data.results[0].geometry.location.lng;
+      }
+
+      searchBtn.addEventListener("click", ()=>{
+        checkWeather(searchBox.value);
+      })
+
+    </script>
+
+  </body>
+</html>
