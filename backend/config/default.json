@@ -1,0 +1,5 @@
+{
+  "providers" : {
+    "weather" : "weatherapi"
+  }
+}
