@@ -13,7 +13,7 @@
         align-items: center;
         justify-content: center;
         */
-        background-color: blue;
+        background-color: #dddddd;
         width: 30%;
         padding: 10px;
         /*margin: 0 auto;*/
@@ -52,17 +52,31 @@
         <h5 class="feelsLike">&nbsp</h5>
         <h6 class="clouds">&nbsp</h6>
       </div>
+      <div class="location">
+        <h1 class="lat">&nbsp</h1>
+        <h2 class="lng">&nbsp</h2>
+      </div>
     </div>
 
     <script>
-      const apiUrl =
-        window.location.origin + "/api/weather?units=imperial&city=";
-
       const searchBox = document.querySelector("#cityInput");//searches for id cityInput and searchButton.
       const searchBtn = document.querySelector("#searchButton");
 
+      async function geoCode(city) {
+        const geoCodeServiceUrl =
+                window.location.origin + "/api/geolocation?address=";
+        const response = await fetch(geoCodeServiceUrl + city);
+        var data = await response.json();//await for response. store response in data
+
+        console.log(data);
+        document.querySelector(".lat").innerHTML = "lat: " + data.results[0].geometry.location.lat;
+        document.querySelector(".lng").innerHTML = "lng: " + data.results[0].geometry.location.lng;
+      }
+
       async function checkWeather(city) {
-        const response = await fetch(apiUrl + city);//make request to server
+        const weatherServiceUrl =
+                window.location.origin + "/api/weather?units=imperial&city=";
+        const response = await fetch(weatherServiceUrl + city);//make request to server
         var data = await response.json();//await for response. store response in data 
 
         console.log(data);
@@ -76,7 +90,7 @@
       }
 
       searchBtn.addEventListener("click", ()=>{
-        checkWeather(searchBox.value);
+        Promise.all([checkWeather(searchBox.value), geoCode(searchBox.value)]);
       })
       
     </script>

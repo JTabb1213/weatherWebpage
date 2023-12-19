@@ -1,5 +1,6 @@
 const express = require('express');
 const weatherService = require('./services/weather');
+const locationService = require('./services/location');
 const app = express();
 
 app.use('/', express.static('../static'));
@@ -11,6 +12,13 @@ app.get('/api/weather', (req, res) => {
     return res.status(400).send('The request is missing a city');
   }
   weatherService.getWeather(city, units).then(result => {
+    res.json(result);
+  })
+});
+
+app.get('/api/geolocation', (req, res) => {
+  const city = req.query.address;
+  locationService.getCoordinates(city).then(result => {
     res.json(result);
   })
 });
