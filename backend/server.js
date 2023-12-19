@@ -1,13 +1,8 @@
 const express = require('express');
-const cors = require('cors');
 const weatherService = require('./services/weather');
 const app = express();
-var corsOptions = {
-  origin: 'http://localhost:8080'
-}
-app.use(cors(corsOptions));
 
-
+app.use('/', express.static('../static'));
 app.get('/api/weather', (req, res) => {
   // Do validation of the request
   const city = req.query.city;

@@ -56,7 +56,7 @@
 
     <script>
       const apiUrl =
-        "http://localhost:3000/api/weather?units=imperial&city=";
+        window.location.origin + "/api/weather?units=imperial&city=";
 
       const searchBox = document.querySelector("#cityInput");//searches for id cityInput and searchButton.
       const searchBtn = document.querySelector("#searchButton");
