@@ -1,25 +1,46 @@
 import { useState } from 'react'
-import './CityInfo.css';
+import {
+    Box,
+    Flex,
+} from '@chakra-ui/react'
+
+import { useJsApiLoader, GoogleMap } from '@react-google-maps/api';
+import './CityInfo.css'
 
 function CityInfo() {
     const [city, setCity] = useState("");
     const [geo, setGeo] = useState([]);
     const [weather, setWeather] = useState([]);
+    const [lat, setLat] = useState();
+    const [lng, setLng] = useState();
+    const center = { lat, lng }
+
+    const apiKey = 'AIzaSyB69lSr663-tF6TivTm-K1l79HomYTqxDE';
+    console.log(apiKey);
+    const { isLoaded } = useJsApiLoader({
+        googleMapsApiKey: apiKey,
+    })
+
+    if (!isLoaded) {
+        return <div>Loading map</div>;
+    }
 
     const geoCode = async () => {
         console.log(city);
         const geoCodeServiceUrl =
-            window.location.origin + "/api/geolocation?address=";
+            "http://localhost:4000/api/geolocation?address=";
         const response = await fetch(geoCodeServiceUrl + city);
         var dataGeo = await response.json();//await for response. store response in data
         console.log(dataGeo);
         setGeo(dataGeo);
+        setLat(dataGeo.results[0].geometry.location.lat);
+        setLng(dataGeo.results[0].geometry.location.lng);
     }
 
     const checkWeather = async () => {
 
         const weatherServiceUrl =
-            window.location.origin + "/api/weather?units=imperial&city=";
+            "http://localhost:4000/api/weather?units=imperial&city=";
         const response = await fetch(weatherServiceUrl + city);//make request to server
         var dataWeather = await response.json();//await for response. store response in data 
         console.log(dataWeather);
@@ -35,9 +56,12 @@ function CityInfo() {
     const handleSearch = () => {
         Promise.all([checkWeather(), geoCode()]);
     }
+
     return (
+
         <div id="container">
             <div className="search">
+
                 <input
                     type="text"
                     id="cityInput"
@@ -62,7 +86,28 @@ function CityInfo() {
                 <h1 className="lat">ln: {geo.results && geo.results[0].geometry.location.lng}</h1>
                 <h2 className="lng">lat: {geo.results && geo.results[0].geometry.location.lat}</h2>
             </div>
-        </div >
+
+
+            <Flex
+                position='relative'
+                flexDirection='column'
+                alignItems='center'
+                bgColor='blue.200'
+                h='100vh'
+                w='100vw'
+            >
+                <Box position='absolute' left={0} top={0} h='100%' w='100%'></Box>
+                {/*google map box*/}
+                <GoogleMap
+                    center={center}
+                    zoom={15}
+                    mapContainerStyle={{ width: '50%', height: '50%' }}
+                >
+                    {/*display...*/}
+                </GoogleMap>
+            </Flex>
+        </div>
+
     );
 }
 export default CityInfo;

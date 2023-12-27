@@ -4,11 +4,8 @@ import './App.css';
 
 function App() {
   return (
-    <div className="container">
-      <div className="box">
-        <CityInfo />
-      </div>
 
+    <div className="container">
       <div className="box">
         <CityInfo />
       </div>
