@@ -47,7 +47,6 @@ function CityInfo() {
         setWeather(dataWeather);
     }
 
-
     const handleChange = (e) => {
         e.preventDefault();
         setCity(e.target.value);
