@@ -4,11 +4,26 @@ const locationService = require('./services/location');
 const cors = require('cors');
 const app = express();
 app.use(
-    cors({
-      origin: "http://localhost:3000"
-    })
+  cors({
+    origin: "http://localhost:3000"
+  })
 );
 app.use('/', express.static('../static'));
+
+app.get('/api/citymap', (req, res) => {
+  const { center } = req.query
+  if (!center) {
+    return res.status(400).send('The request is missing a center');
+  }
+  console.log("Center is: ", center);
+  mapService.getMap(center).then(result => {
+
+    res.json(result);
+  })
+
+})
+
+
 app.get('/api/weather', (req, res) => {
   // Do validation of the request
   const city = req.query.city;

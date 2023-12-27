@@ -1,6 +1,7 @@
 {
-  "providers" : {
-    "weather" : "weatherapi",
-    "location": "googleapi"
+  "providers": {
+    "weather": "weatherapi",
+    "location": "googleapi",
+    "map": "googlemapapi"
   }
 }
