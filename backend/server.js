@@ -1,8 +1,13 @@
 const express = require('express');
 const weatherService = require('./services/weather');
 const locationService = require('./services/location');
+const cors = require('cors');
 const app = express();
-
+app.use(
+    cors({
+      origin: "http://localhost:3000"
+    })
+);
 app.use('/', express.static('../static'));
 app.get('/api/weather', (req, res) => {
   // Do validation of the request
@@ -23,4 +28,4 @@ app.get('/api/geolocation', (req, res) => {
   })
 });
 
-app.listen(3000, () => console.log('Example app is listening on port 3000.'));
+app.listen(4000, () => console.log('Example app is listening on port 3000.'));

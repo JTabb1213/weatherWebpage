@@ -1,0 +1,37 @@
+#container {
+    /*
+    background-color: blue;
+    margin:0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /////
+    */
+    background-color: #dddddd;
+    width: 90%;
+    padding: 10px;
+    text-align: center;
+
+
+}
+
+.weather {
+    color: grey;
+
+}
+
+.weather h1 {
+    font-size: 25px;
+}
+
+.weather h2,
+.weather h3,
+.weather h4,
+.weather h5,
+.weather h6 {
+    font-size: 15px;
+}
+
+#searchButton {
+    color: green;
+}
