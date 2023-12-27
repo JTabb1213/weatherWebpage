@@ -6,6 +6,8 @@ import {
 
 import { useJsApiLoader, GoogleMap } from '@react-google-maps/api';
 import './CityInfo.css'
+import React, { useEffect } from 'react';
+
 
 function CityInfo() {
     const [city, setCity] = useState("");
@@ -14,7 +16,8 @@ function CityInfo() {
     const [lat, setLat] = useState();
     const [lng, setLng] = useState();
     const center = { lat, lng }
-
+    const [mapData, setMapData] = useState(null);
+    /*
     const apiKey = 'AIzaSyB69lSr663-tF6TivTm-K1l79HomYTqxDE';
     console.log(apiKey);
     const { isLoaded } = useJsApiLoader({
@@ -24,6 +27,23 @@ function CityInfo() {
     if (!isLoaded) {
         return <div>Loading map</div>;
     }
+    */
+    const getMap = async (lat, lng) => {//
+        console.log("Center: ", { lat, lng });
+        const cityMapUrl =
+            "http://localhost:4000/api/citymap?center=";
+        const response = await fetch(`${cityMapUrl}${lat},${lng}`);
+        const data = await response.blob();
+        console.log("blob type:", data);
+        const imageUrl = URL.createObjectURL(data);
+        console.log("Imageurl: ", imageUrl);
+        setMapData(imageUrl);
+
+    };
+
+    useEffect(() => {
+        getMap();
+    }, []);
 
     const geoCode = async () => {
         console.log(city);
@@ -35,6 +55,7 @@ function CityInfo() {
         setGeo(dataGeo);
         setLat(dataGeo.results[0].geometry.location.lat);
         setLng(dataGeo.results[0].geometry.location.lng);
+        getMap(dataGeo.results[0].geometry.location.lat, dataGeo.results[0].geometry.location.lng);
     }
 
     const checkWeather = async () => {
@@ -86,7 +107,7 @@ function CityInfo() {
                 <h2 className="lng">lat: {geo.results && geo.results[0].geometry.location.lat}</h2>
             </div>
 
-
+            {/*
             <Flex
                 position='relative'
                 flexDirection='column'
@@ -96,17 +117,20 @@ function CityInfo() {
                 w='100vw'
             >
                 <Box position='absolute' left={0} top={0} h='100%' w='100%'></Box>
-                {/*google map box*/}
+
                 <GoogleMap
                     center={center}
                     zoom={15}
                     mapContainerStyle={{ width: '50%', height: '50%' }}
                 >
-                    {/*display...*/}
+
                 </GoogleMap>
             </Flex>
-        </div>
+            */}
 
+            <img src={mapData} alt="Map" style={{ width: '100%', height: '100%' }} />
+
+        </div>
     );
 }
 export default CityInfo;
