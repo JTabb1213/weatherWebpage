@@ -12,7 +12,9 @@ function Weather({city}) {
     };
 
     useEffect(() => {
-        getWeather();
+        if (city) {
+            getWeather();
+        }
     }, [city]);
     return (
         <>

@@ -8,10 +8,10 @@ const PROVIDERS = {
 const provider = config.get("providers.map");
 _delagate = require('./providers/googleMapApi');
 console.log(`Using ${provider} as the map provider`);
-async function getMap(city) {
-    return _delagate.getMap.apply(_delagate, arguments);
+async function getMapUrl(city) {
+    return _delagate.getMapUrl.apply(_delagate, arguments);
 }
 
 module.exports = {
-    getMap: getMap
+    getMapUrl: getMapUrl
 }

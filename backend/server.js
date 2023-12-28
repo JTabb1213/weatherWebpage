@@ -16,7 +16,10 @@ app.get('/api/map', (req, res) => {
   if (!city) {
     return res.status(400).send('The request is missing a city');
   }
-  mapService.getMap(city).then(result => {
+  mapService.getMapUrl(city).then(result => {
+    if (!result) {
+      return res.status(404).send('City not found, or there were more than 1 candidates');
+    }
     res.json({
       mapUrl: result
     });
@@ -33,13 +36,17 @@ app.get('/api/weather', (req, res) => {
   }
   weatherService.getWeather(city, units).then(result => {
     res.json(result);
-  })
+  }).catch(err => {
+    res.status(err.response.status).send(err.response.statusText);
+  });
 });
 
 app.get('/api/geolocation', (req, res) => {
   const city = req.query.address;
   locationService.getCoordinates(city).then(result => {
     res.json(result);
+  }).catch(err => {
+    res.status(err.response.status).send(err.response.statusText);
   })
 });
 

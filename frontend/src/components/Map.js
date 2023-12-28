@@ -13,7 +13,9 @@ function Map({city}) {
     };
 
     useEffect(() => {
-        getMapUrl();
+        if (city) {
+            getMapUrl();
+        }
     }, [city]);
     return (
         <>

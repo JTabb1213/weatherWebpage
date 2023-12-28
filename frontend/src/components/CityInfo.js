@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useRef} from 'react'
 import {
     Box,
     Flex,
@@ -12,32 +12,27 @@ import Map from "./Map";
 
 
 function CityInfo() {
-    const [input, setInput] = useState();
     const [city, setCity] = useState();
+    const cityInput = useRef();
     const handleSearch = (e) => {
         e.preventDefault();
-        setCity(input);
+        setCity(cityInput.current.value);
     };
     return (
         <div id="container">
             <div className="search">
 
                 <input
+                    ref={cityInput}
                     type="text"
                     id="cityInput"
                     placeholder="enter city name"
                     spellCheck="false"
-                    value={city}
-                    onChange={(e) => setInput(e.target.value)}
                 />
                 <button id="searchButton" onClick={handleSearch}>search</button>
             </div>
-            {city &&
-                <div>
-                    <Weather city={city}/>
-                    <Map city={city}/>
-                </div>
-            }
+            <Weather city={city}/>
+            <Map city={city}/>
         </div>
 
     );
