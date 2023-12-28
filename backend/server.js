@@ -1,6 +1,7 @@
 const express = require('express');
 const weatherService = require('./services/weather');
 const locationService = require('./services/location');
+const mapService = require('./services/map');
 const cors = require('cors');
 const app = express();
 app.use(
@@ -10,17 +11,16 @@ app.use(
 );
 app.use('/', express.static('../static'));
 
-app.get('/api/citymap', (req, res) => {
-  const { center } = req.query
-  if (!center) {
-    return res.status(400).send('The request is missing a center');
+app.get('/api/map', (req, res) => {
+  const { city } = req.query
+  if (!city) {
+    return res.status(400).send('The request is missing a city');
   }
-  console.log("Center is: ", center);
-  mapService.getMap(center).then(result => {
-
-    res.json(result);
+  mapService.getMap(city).then(result => {
+    res.json({
+      mapUrl: result
+    });
   })
-
 })
 
 
@@ -43,4 +43,4 @@ app.get('/api/geolocation', (req, res) => {
   })
 });
 
-app.listen(4000, () => console.log('Example app is listening on port 3000.'));
+app.listen(4000, () => console.log('Example app is listening on port 4000.'));
