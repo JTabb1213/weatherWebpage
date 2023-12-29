@@ -1,4 +1,5 @@
 const express = require('express');
+const basicAuth = require('express-basic-auth');
 const weatherService = require('./services/weather');
 const locationService = require('./services/location');
 const mapService = require('./services/map');
@@ -6,10 +7,30 @@ const cors = require('cors');
 const app = express();
 app.use(
   cors({
-    origin: "http://localhost:3000"
+    origin: "http://localhost:3000",
+    credentials: true,
   })
 );
 app.use('/', express.static('../static'));
+/*
+app.use(basicAuth({
+  users: { 'admin': 'supersecret' }
+}))
+
+app.get('/', (req, res) => {
+  res.send('authorized');
+});
+*/
+
+app.use(basicAuth({
+  users: { 'uncleMike': 'IsAHugeFag' },
+  challenge: true,
+  realm: 'foo',
+}))
+app.get('/', (req, res) => {
+  res.send('authorized');
+});
+
 
 app.get('/api/map', (req, res) => {
   const { city } = req.query
