@@ -3,22 +3,19 @@ import { useEffect, useState } from "react";
 
 
 function Map({ city, username, password }) {
-    console.log(username);
-    console.log(password);
-    console.log(city);
+    // console.log(username);
+    // console.log(password);
+    // console.log(city);
     const [mapUrl, setMapUrl] = useState();
     const [error, setError] = useState();
     const getMapUrl = async () => {//
         const mapRequestUrl =
             `${appProps.backend}/api/map?city=${city}`;
         const response = await fetch(mapRequestUrl, {
-            //credentials: 'include',
             headers: {
-                // 'Authorization': 'Basic ' + btoa('admin:supersecret')
                 'Authorization': `Basic ${btoa(username + ':' + password)}`
             }
         });
-        //console.log(mapRequestUrl);
         const body = await response.json();
         response.ok ? setMapUrl(body.mapUrl) : setError(body);
     };

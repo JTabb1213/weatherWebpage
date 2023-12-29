@@ -10,9 +10,7 @@ function Weather({ city, username, password }) {
         const weatherRequestUrl =
             `${appProps.backend}/api/weather?units=imperial&city=${city}`;
         const response = await fetch(weatherRequestUrl, {
-            //credentials: 'include',
             headers: {
-                //'Authorization': 'Basic ' + btoa('admin:supersecret')
                 'Authorization': `Basic ${btoa(username + ':' + password)}`
             }
         });//make request to server
