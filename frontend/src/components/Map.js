@@ -7,6 +7,7 @@ function Map({ city, username, password }) {
     console.log(password);
     console.log(city);
     const [mapUrl, setMapUrl] = useState();
+    const [error, setError] = useState();
     const getMapUrl = async () => {//
         const mapRequestUrl =
             `${appProps.backend}/api/map?city=${city}`;
@@ -19,19 +20,28 @@ function Map({ city, username, password }) {
         });
         //console.log(mapRequestUrl);
         const body = await response.json();
-        setMapUrl(body.mapUrl);
+        response.ok ? setMapUrl(body.mapUrl) : setError(body);
     };
 
     useEffect(() => {
         if (city) {
+            setMapUrl(null);
+            setError(null);
             getMapUrl();
         }
     }, [city]);
     return (
         <>
-            {mapUrl && <div>
+            {mapUrl ? <div>
                 <img src={mapUrl} />
-            </div>}
+            </div>
+                :
+                error &&
+                <div className="error">
+                    <h1>Could not fetch the map due to server error:</h1>
+                    <h2>{error.message}</h2>
+                </div>
+            }
         </>
     )
 }

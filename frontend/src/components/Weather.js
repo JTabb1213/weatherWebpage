@@ -5,6 +5,7 @@ function Weather({ city, username, password }) {
     //const username = "admin";
     //const password = "supersecret";
     const [weather, setWeather] = useState();
+    const [error, setError] = useState();
     const getWeather = async () => {//
         const weatherRequestUrl =
             `${appProps.backend}/api/weather?units=imperial&city=${city}`;
@@ -17,16 +18,19 @@ function Weather({ city, username, password }) {
         });//make request to server
         var dataWeather = await response.json();//await for response. store response in data
         setWeather(dataWeather);
+
     };
 
     useEffect(() => {
         if (city) {
+            setWeather(null);
+            setError(null);
             getWeather();
         }
     }, [city]);
     return (
         <>
-            {weather &&
+            {weather ?
                 <div className="weather">
                     <h1 className="city">City: {weather.name && weather.name}</h1>
                     <h2 className="temp">Temp: {weather.main && Math.round(weather.main.temp) + " F"}</h2>
@@ -35,7 +39,13 @@ function Weather({ city, username, password }) {
                     <h5 className="feelsLike">Feels
                         like: {weather.main && Math.round(weather.main.feels_like) + " F"}</h5>
                     <h6 className="clouds">{weather.weather && weather.weather[0].main + " skies"}</h6>
-                </div>}
+                </div> :
+                error &&
+                <div className="error">
+                    <h1>Could not fetch the weather due to server error:</h1>
+                    <h2>{error.message}</h2>
+                </div>
+            }
         </>
     )
 }

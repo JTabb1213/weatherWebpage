@@ -39,7 +39,7 @@ app.get('/api/map', (req, res) => {
   }
   mapService.getMapUrl(city).then(result => {
     if (!result) {
-      return res.status(404).send('City not found, or there were more than 1 candidates');
+      return res.status(404).json({message: 'City not found, or there were more than 1 candidates'});
     }
     res.json({
       mapUrl: result
@@ -58,7 +58,7 @@ app.get('/api/weather', (req, res) => {
   weatherService.getWeather(city, units).then(result => {
     res.json(result);
   }).catch(err => {
-    res.status(err.response.status).send(err.response.statusText);
+    res.status(err.response.status).json({message: err.response.statusText});
   });
 });
 
@@ -67,7 +67,7 @@ app.get('/api/geolocation', (req, res) => {
   locationService.getCoordinates(city).then(result => {
     res.json(result);
   }).catch(err => {
-    res.status(err.response.status).send(err.response.statusText);
+    res.status(err.response.status).json({message: err.response.statusText});
   })
 });
 
