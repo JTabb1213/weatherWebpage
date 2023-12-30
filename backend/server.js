@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 */
 
 app.use(basicAuth({
-  users: { 'uncleMike': 'IsAHugeFag' },
+  users: { 'foo': 'bar' },
   unauthorizedResponse: (req) => {
     return `unauthorized. ip: ${req.ip}`
   },
