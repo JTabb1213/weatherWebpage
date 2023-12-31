@@ -1,23 +1,17 @@
 import appProps from "../AppProps";
 import { useEffect, useState } from "react";
+import HttpClient from "../HttpClient";
 
 
-function Map({ city, username, password }) {
-    // console.log(username);
-    // console.log(password);
-    // console.log(city);
+function Map({ city}) {
     const [mapUrl, setMapUrl] = useState();
     const [error, setError] = useState();
     const getMapUrl = async () => {//
-        const mapRequestUrl =
-            `${appProps.backend}/api/map?city=${city}`;
-        const response = await fetch(mapRequestUrl, {
-            headers: {
-                'Authorization': `Basic ${btoa(username + ':' + password)}`
-            }
-        });
-        const body = await response.json();
-        response.ok ? setMapUrl(body.mapUrl) : setError(body);
+        HttpClient.get(`/api/map?city=${city}`).then(result => {
+            setMapUrl(result.data.mapUrl);
+        }).catch(err => {
+            setError(err.response.data);
+        })
     };
 
     useEffect(() => {

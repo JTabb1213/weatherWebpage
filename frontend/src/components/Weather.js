@@ -1,22 +1,16 @@
 import { useEffect, useState } from "react";
 import appProps from "../AppProps";
+import HttpClient from "../HttpClient";
 
-function Weather({ city, username, password }) {
-    //const username = "admin";
-    //const password = "supersecret";
+function Weather({ city}) {
     const [weather, setWeather] = useState();
     const [error, setError] = useState();
     const getWeather = async () => {//
-        const weatherRequestUrl =
-            `${appProps.backend}/api/weather?units=imperial&city=${city}`;
-        const response = await fetch(weatherRequestUrl, {
-            headers: {
-                'Authorization': `Basic ${btoa(username + ':' + password)}`
-            }
-        });//make request to server
-        var dataWeather = await response.json();//await for response. store response in data
-        setWeather(dataWeather);
-
+        HttpClient.get(`/api/weather?units=imperial&city=${city}`).then(result => {
+            setWeather(result.data);
+        }).catch(err => {
+            setError(err.response.data);
+        })
     };
 
     useEffect(() => {

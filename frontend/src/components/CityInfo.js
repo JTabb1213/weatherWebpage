@@ -1,12 +1,10 @@
-import { useState, useRef } from 'react'
+import {useState, useRef} from 'react'
 import './CityInfo.css'
 import Weather from "./Weather";
 import Map from "./Map";
 
 
-function CityInfo({ username, password }) {
-    //console.log(password);
-    //console.log(username);
+function CityInfo() {
     const [city, setCity] = useState();
     const cityInput = useRef();
 
@@ -27,8 +25,8 @@ function CityInfo({ username, password }) {
                 />
                 <button id="searchButton" onClick={handleSearch}>search</button>
             </div>
-            <Weather city={city} username={username} password={password} />
-            <Map city={city} username={username} password={password} />
+            <Weather city={city}/>
+            <Map city={city}/>
         </div>
 
     );
