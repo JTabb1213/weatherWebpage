@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import appProps from "../AppProps";
 import HttpClient from "../HttpClient";
 
 function Weather({ city}) {

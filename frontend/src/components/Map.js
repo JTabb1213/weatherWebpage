@@ -1,4 +1,3 @@
-import appProps from "../AppProps";
 import { useEffect, useState } from "react";
 import HttpClient from "../HttpClient";
 
