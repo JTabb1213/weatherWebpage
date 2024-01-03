@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import HttpClient from "../HttpClient";
+import {useHttpClient} from "../HttpClient";
+
 
 function Weather({ city }) {
     const [weather, setWeather] = useState();
     const [error, setError] = useState();
-    const getWeather = async () => {//
-        HttpClient.get(`/api/weather?units=imperial&city=${city}`).then(result => {
+    const httpClient = useHttpClient();
+    const getWeather = async () => {
+        httpClient.get(`/api/weather?units=imperial&city=${city}`).then(result => {
             setWeather(result.data);
         }).catch(err => {
             setError(err.response.data);

@@ -1,24 +1,33 @@
 import axios from "axios";
 import AppProps from "./AppProps";
+import {useLocation, useNavigate, useNavigation} from "react-router-dom";
 
-const axiosInstance = axios.create({
-    baseURL: AppProps.backend,
-    withCredentials: true,
-    headers: {
-        Accept: "application/json",
-    },
-});
+export const useHttpClient = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+    const axiosInstance = axios.create({
+        baseURL: AppProps.backend,
+        withCredentials: true,
+        headers: {
+            Accept: "application/json",
+        },
+    });
 
-axiosInstance.interceptors.response.use(
-    response => {
+    axiosInstance.interceptors.response.use(
+        response => {
 
-        return response
-    },
-    function (error) {
-        if (error.response.status === 401) {
-            window.location.href = `login?original_url=${window.location.href}`;
+            return response
+        },
+        function (error) {
+            const currentPathname = window.location.pathname;
+            if (error.response.status === 401 && currentPathname !== '/login') {
+                navigate({
+                    pathname: '/login',
+                    search: `original_url=${location.pathname}${location.search}`,
+                })
+            }
+            return Promise.reject(error);
         }
-        return Promise.reject(error);
-    }
-)
-export default axiosInstance;
+    )
+    return axiosInstance;
+}

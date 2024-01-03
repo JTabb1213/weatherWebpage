@@ -1,28 +1,29 @@
-import { Button } from "@mui/material";
-import { useState } from "react";
+import {Button} from "@mui/material";
+import {useState} from "react";
 import styles from '../css/login.module.css';
-import HttpClient from "../HttpClient";
+import {useHttpClient} from "../HttpClient";
+import {useNavigate, useSearchParams} from "react-router-dom";
 
 export default function Login() {
+    const httpClient = useHttpClient();
+    const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams();
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [emailError, setEmailError] = useState("")
     const [passwordError, setPasswordError] = useState("")
 
     const onButtonClick = () => {
-        HttpClient.post('/api/login', {
+        httpClient.post('/api/login', {
             username: username,
             password: password
-        }, {
+        },{
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             }
         }).then(result => {
-            // Redirect back to the original url
-            const queryString = window.location.search;
-            const urlParams = new URLSearchParams(queryString);
-            const originalUrl = urlParams.get('original_url') || '/';
-            window.location.href = `${originalUrl}`;
+            const originalUrl = searchParams.get('original_url') || '/';
+            navigate(originalUrl);
         }).catch(err => {
             setEmailError(err.response.data.message);
             setPasswordError(err.response.data.message)

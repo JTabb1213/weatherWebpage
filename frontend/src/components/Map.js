@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
-import HttpClient from "../HttpClient";
+import {useHttpClient} from "../HttpClient";
+
 
 
 function Map({ city }) {
     const [mapUrl, setMapUrl] = useState();
     const [error, setError] = useState();
+    const httpClient = useHttpClient();
     const getMapUrl = async () => {//
-        HttpClient.get(`/api/map?city=${city}`).then(result => {
+        httpClient.get(`/api/map?city=${city}`).then(result => {
             setMapUrl(result.data.mapUrl);
         }).catch(err => {
             setError(err.response.data);
