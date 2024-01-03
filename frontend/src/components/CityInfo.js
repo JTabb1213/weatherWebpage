@@ -1,8 +1,8 @@
-import {useState, useRef, useEffect} from 'react'
+import { useState, useRef, useEffect } from 'react'
 import './CityInfo.css'
 import Weather from "./Weather";
 import Map from "./Map";
-import {useSearchParams} from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 
 function CityInfo() {
@@ -12,7 +12,7 @@ function CityInfo() {
     const handleSearch = (e) => {
         e.preventDefault();
         setSearchParams(params => {
-            params.set("city" , cityInput);
+            params.set("city", cityInput);
             return params;
         })
         setCity(cityInput);
@@ -30,8 +30,8 @@ function CityInfo() {
                 />
                 <button id="searchButton" onClick={handleSearch}>search</button>
             </div>
-            <Weather city={city}/>
-            <Map city={city}/>
+            <Weather city={city} />
+            <Map city={city} />
         </div>
 
     );
