@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import HttpClient from "../HttpClient";
 
-function Weather({ city}) {
+function Weather({ city }) {
     const [weather, setWeather] = useState();
     const [error, setError] = useState();
     const getWeather = async () => {//

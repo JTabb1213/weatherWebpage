@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import HttpClient from "../HttpClient";
 
 
-function Map({ city}) {
+function Map({ city }) {
     const [mapUrl, setMapUrl] = useState();
     const [error, setError] = useState();
     const getMapUrl = async () => {//

@@ -1,5 +1,5 @@
-import {Button} from "@mui/material";
-import {useState} from "react";
+import { Button } from "@mui/material";
+import { useState } from "react";
 import styles from '../css/login.module.css';
 import HttpClient from "../HttpClient";
 
@@ -13,7 +13,7 @@ export default function Login() {
         HttpClient.post('/api/login', {
             username: username,
             password: password
-        },{
+        }, {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             }
@@ -22,7 +22,10 @@ export default function Login() {
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
             const originalUrl = urlParams.get('original_url') || '/';
-            window.location.href = originalUrl;
+            window.location.href = `${originalUrl}`;
+        }).catch(err => {
+            setEmailError(err.response.data.message);
+            setPasswordError(err.response.data.message)
         })
     }
 
