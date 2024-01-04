@@ -8,7 +8,10 @@ const cors = require('cors');
 const redis = require('redis');
 const connectRedis = require('connect-redis');
 var bodyParser = require('body-parser');
-
+const REDIS_HOST = process.env.REDIS_HOST || 'localhost';
+const REDIS_PORT = process.env.REDIS_PORT || 6379;
+const REDIS_USERNAME = process.env.REDIS_USERNAME;
+const REDIS_PASSWORD = process.env.REDIS_PASSWORD;
 const app = express();
 
 const USERS = {
@@ -24,15 +27,17 @@ app.use(
 
 app.use(bodyParser.json());
 
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({extended: true}));
 // enable this if you run behind a proxy (e.g. nginx)
 app.set('trust proxy', 1);
 
-const RedisStore = connectRedis(session)
-//Configure redis client
+let redisUrl = process.env.REDIS_URL;
+if (!redisUrl) {
+    redisUrl = `redis://${REDIS_USERNAME ? REDIS_USERNAME + ':' : ''}${REDIS_PASSWORD ? REDIS_PASSWORD + '@' : ''}${REDIS_HOST}:${REDIS_PORT}`
+}
+const RedisStore = connectRedis(session);
 const redisClient = redis.createClient({
-    host: 'localhost',
-    port: 6379
+    url: redisUrl
 })
 
 redisClient.on('error', function (err) {
@@ -44,7 +49,7 @@ redisClient.on('connect', function (err) {
 
 //Configure session middleware
 app.use(session({
-    store: new RedisStore({ client: redisClient }),
+    store: new RedisStore({client: redisClient}),
     secret: 'secret$%^134',
     resave: false,
     saveUninitialized: false,
@@ -59,18 +64,18 @@ function isLoggedIn(req, res, next) {
     if (req.session.user) {
         next();
     } else {
-        res.status(401).json({ message: 'Not authorized' });
+        res.status(401).json({message: 'Not authorized'});
     }
 }
 
 app.get('/api/map', isLoggedIn, (req, res) => {
-    const { city } = req.query
+    const {city} = req.query
     if (!city) {
         return res.status(400).send('The request is missing a city');
     }
     mapService.getMapUrl(city).then(result => {
         if (!result) {
-            return res.status(404).json({ message: 'City not found, or there were more than 1 candidates' });
+            return res.status(404).json({message: 'City not found, or there were more than 1 candidates'});
         }
         res.json({
             mapUrl: result
@@ -89,7 +94,7 @@ app.get('/api/weather', isLoggedIn, (req, res) => {
     weatherService.getWeather(city, units).then(result => {
         res.json(result);
     }).catch(err => {
-        res.status(err.response.status).json({ message: err.response.statusText });
+        res.status(err.response.status).json({message: err.response.statusText});
     });
 });
 
@@ -98,7 +103,7 @@ app.get('/api/geolocation', isLoggedIn, (req, res) => {
     locationService.getCoordinates(city).then(result => {
         res.json(result);
     }).catch(err => {
-        res.status(err.response.status).json({ message: err.response.statusText });
+        res.status(err.response.status).json({message: err.response.statusText});
     })
 });
 
@@ -106,14 +111,14 @@ app.post('/api/login', (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
     if (!username || !password) {
-        return res.status(400).json({ message: 'Missing username or password' });
+        return res.status(400).json({message: 'Missing username or password'});
     }
     const storedPass = USERS[username];
     if (!storedPass) {
-        return res.status(400).json({ message: 'User not found' });
+        return res.status(400).json({message: 'User not found'});
     }
     if (storedPass !== password) {
-        return res.status(400).json({ message: 'Password does not match' });
+        return res.status(400).json({message: 'Password does not match'});
     }
     req.session.user = username;
     res.status(200).json({});
