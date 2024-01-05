@@ -1,8 +1,9 @@
-import {Alert, Box, Button, Grid, TextField} from "@mui/material";
+import {Alert, Box, Button, CircularProgress, Grid, Paper, TextField} from "@mui/material";
 import {useState} from "react";
 import styles from '../css/login.module.css';
 import {useHttpClient} from "../HttpClient";
 import {useNavigate, useSearchParams} from "react-router-dom";
+import { green } from '@mui/material/colors';
 
 export default function Login() {
     const httpClient = useHttpClient();
@@ -11,8 +12,10 @@ export default function Login() {
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState();
-
+    const [working, setWorking] = useState();
     const onButtonClick = () => {
+        setError(null);
+        setWorking(true);
         httpClient.post('/api/login', {
             username: username,
             password: password
@@ -25,6 +28,8 @@ export default function Login() {
             navigate(originalUrl);
         }).catch(err => {
             setError(err.response.data.message);
+        }).finally(() => {
+            setWorking(false);
         })
     }
 
@@ -48,14 +53,31 @@ export default function Login() {
     }
 
     return <div className={styles.mainContainer}>
-        <Box sx={{width: { xs: "75%", md: '30%' }}}>
+        <Paper elevation={5} sx={{width: { xs: "75%", sm: '50%', md: '50%', lg: '35%' }, padding: '40px', marginTop: '200px'}}>
+        <Box>
             <Grid container
                   alignItems="center"
                   justifyContent="center"
                   spacing={2}>
                 <Grid item align="center"
                       xs={12}>
+                    <Box sx={{ m: 1, position: 'relative' }}>
                     <img src="/lock.png"/>
+                    {working && (
+                        <CircularProgress
+                            size={50}
+                            sx={{
+                                color: green[500],
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                marginTop: '-26px',
+                                marginLeft: '-25px',
+                                zIndex: 1,
+                            }}
+                        />
+                    )}
+                    </Box>
                 </Grid>
                 <Grid item xs={12} align="center">
                     <div className={styles.title}>Sign in</div>
@@ -72,22 +94,25 @@ export default function Login() {
                 </Grid>
                 <Grid item xs={12}>
                     <TextField fullWidth defaultValue={password}
+                               type="password"
                                onChange={ev => setPassword(ev.target.value)}
                                label="Password" variant="outlined"/>
                 </Grid>
                 <Grid item xs={12}>
                     <Button fullWidth variant="contained" onClick={onButtonClick}>SIGN IN</Button>
                 </Grid>
-                <Grid container item xs={12} direction="row">
-                    <Grid item xs={12} md={6} align="start">
+                <Grid container item xs={12} direction="row" spacing={1}>
+                    <Grid item xs={12} md={6} container justifyContent="start">
                         <a onClick={() => alert('TODO: Need to handle forgot password')}>Forgot password?</a>
                     </Grid>
-                    <Grid item xs={12} md={6} align="end">
+                    <Grid item container xs={12} md={6} justifyContent={{lg: 'end', md: 'end', sm: 'start', xs: 'start'}}>
                         <a onClick={onCreateUser}>Don't have an account? Sign Up</a>
                     </Grid>
                 </Grid>
             </Grid>
+
         </Box>
+        </Paper>
     </div>
 
 
