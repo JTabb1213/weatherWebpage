@@ -1,8 +1,8 @@
-import {Button} from "@mui/material";
-import {useState} from "react";
+import { Button } from "@mui/material";
+import { useState } from "react";
 import styles from '../css/login.module.css';
-import {useHttpClient} from "../HttpClient";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import { useHttpClient } from "../HttpClient";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export default function Login() {
     const httpClient = useHttpClient();
@@ -17,7 +17,7 @@ export default function Login() {
         httpClient.post('/api/login', {
             username: username,
             password: password
-        },{
+        }, {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             }
@@ -28,6 +28,27 @@ export default function Login() {
             setEmailError(err.response.data.message);
             setPasswordError(err.response.data.message)
         })
+    }
+
+    const onCreateUser = () => {
+        httpClient.post('/api/createUser', {
+            username: username,
+            password: password
+        }, {
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded"
+            }
+        }).then(result => {
+            if (result.data === 'user not added') {
+                console.log('User not created');
+            }
+
+            else {
+                console.log('user created');
+            }
+        }).catch(err => {
+            console.error('Error: ', err.message);
+        });
     }
 
     return <div className={styles.mainContainer}>
@@ -59,6 +80,14 @@ export default function Login() {
                 type="button"
                 onClick={onButtonClick}
                 value={"Log in"} />
+        </div>
+        <br />
+        <div className={styles.inputContainer}>
+            <input
+                className={styles.inputButton}
+                type="button"
+                onClick={onCreateUser}
+                value={"create user"} />
         </div>
     </div>
 
