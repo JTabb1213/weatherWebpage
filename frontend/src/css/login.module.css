@@ -1,73 +1,16 @@
 .mainContainer {
+    font-family: Roboto, Helvetica, Arial, sans-serif;
     flex-direction: column;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: 50%;
 }
 
-.titleContainer {
-    display: flex;
-    flex-direction: column;
-    font-size: 64px;
-    font-weight: bolder;
-    align-items: center;
-    justify-content: center;
-}
-
-.resultContainer, .historyItem {
-    flex-direction: row;
-    display: flex;
-    width: 400px;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.historyContainer {
-    flex-direction: column;
-    display: flex;
-    height: 200px;
-    align-items: center;
-    flex-grow: 5;
-    justify-content: flex-start;
-}
-
-.buttonContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 260px;
-}
-
-.inputContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-}
-
-.inputContainer > .errorLabel {
-    color: red;
-    font-size: 12px;
-}
-
-.inputBox {
-    height: 48px;
-    width: 400px;
-    font-size: large;
-    border-radius: 8px;
-    border: 1px solid grey;
-    padding-left: 8px;
-}
-
-.inputButton {
-    border: none;
-    background: cornflowerblue;
-    color: white;
-    padding: 12px 24px;
-    margin: 8px;
-    font-size: 24px;
-    border-radius: 8px;
-    cursor: pointer;
+.title {
+    margin: 0px;
+    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 1.334;
+    letter-spacing: 0em;
 }

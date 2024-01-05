@@ -1,8 +1,8 @@
-import { useState, useRef, useEffect } from 'react'
-import './CityInfo.css'
+import {useState} from 'react'
 import Weather from "./Weather";
 import Map from "./Map";
-import { useSearchParams } from "react-router-dom";
+import {useSearchParams} from "react-router-dom";
+import {Button, Grid, Paper, TextField} from "@mui/material";
 
 
 function CityInfo() {
@@ -19,21 +19,39 @@ function CityInfo() {
     };
     return (
         <div id="container">
-            <div className="search">
-                <input
-                    type="text"
-                    id="cityInput"
-                    placeholder="enter city name"
-                    spellCheck="false"
-                    value={cityInput}
-                    onChange={e => setCityInput(e.currentTarget.value)}
-                />
-                <button id="searchButton" onClick={handleSearch}>search</button>
-            </div>
-            <Weather city={city} />
-            <Map city={city} />
-        </div>
+            <Grid container spacing={2} direction="column" alignItems="center" justifyContent="center">
+                <Grid item container align="center" spacing={1} justifyContent="center">
+                    <Grid item>
+                    <TextField
+                        sx={{backgroundColor: '#fff'}}
+                        variant="outlined"
+                        label="City"
+                        defaultValue={cityInput}
+                        onChange={e => setCityInput(e.currentTarget.value)}
+                    />
+                    </Grid>
+                    <Grid item sx={{display: 'flex', alignItems: 'center'}}>
+                        <Button fullWidth variant="contained" onClick={handleSearch}>Search</Button>
+                    </Grid>
+                </Grid>
+                {city && <Grid item sx={{marginTop: '100px'}} >
+                    <Paper elevation={1}>
+                        <Grid item container alignItems="center" justifyContent="center" spacing={5} xs={12}>
+                        <Grid item container sx={{paddingTop: '0px !important', minHeight: '400px', minWidth: '400px'}} xs={6}>
+                            <Weather city={city} />
+                        </Grid>
+                        <Grid item container sx={{paddingTop: '0px !important', minHeight: '400px', minWidth: '400px'}} xs={6}>
+                            <Map city={city} />
+                        </Grid>
+                        </Grid>
+                    </Paper>
+                </Grid>}
 
+            </Grid>
+
+
+
+        </div>
     );
 }
 

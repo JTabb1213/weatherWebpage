@@ -1,8 +1,8 @@
 import React from "react";
 import CityInfo from "../components/CityInfo";
 import '../App.css';
-import { useHttpClient } from "../HttpClient";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import {useHttpClient} from "../HttpClient";
+import {useNavigate, useSearchParams} from "react-router-dom";
 
 
 export default function Home() {
@@ -25,9 +25,8 @@ export default function Home() {
     }
 
     return (
-        <div className="box">
+        <div>
             <CityInfo />
-            <button onClick={handleLogout}>logout</button>
         </div>
     );
 }
