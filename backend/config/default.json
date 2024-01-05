@@ -3,5 +3,8 @@
     "weather": "weatherapi",
     "location": "googleapi",
     "map": "googlemapapi"
+  },
+  "databases": {
+    "userAndPassword": "postgreSQL"
   }
 }

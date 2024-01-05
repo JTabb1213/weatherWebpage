@@ -2,6 +2,8 @@ const express = require('express');
 const weatherService = require('./services/weather');
 const locationService = require('./services/location');
 const mapService = require('./services/map');
+const addUserService = require('./databases/servicesDatabase/addUser');
+const searchUser = require('./databases/servicesDatabase/searchUser');
 const session = require('express-session');
 const cors = require('cors');
 const redis = require('redis');
@@ -111,30 +113,33 @@ app.post('/api/login', async (req, res, next) => {
     if (!username || !password) {
         return res.status(400).json({ message: 'Missing username or password' });
     }
-    try {
-        const findUser = await findUsernameAndPassword(username, password);
 
-        if (findUser) {
-            req.session.user = username;
-            console.log('user found', username, password);
-            return res.status(200).json({});
+    searchUser.findUsernameAndPassword(username, password).then(result => {
+        if (!result) {
+            res.status(404).json({ message: "User not found" });
         } else {
-            console.log('user not found', username, password);
-            return res.status(400).json({ message: 'user not found' });
+            console.log("user found");
+            res.status(200).json(result);
         }
-    } catch (err) {
-        console.log(err.message);
-    }
-
-    closeConnection();
-
+    }).catch(error => {
+        console.error(error);
+        res.status(500).json({ message: "database error" });
+    })
 });
 
 app.post('/api/createUser', async (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
-    const add = await addUser(username, password);
-    endConnection();
+    addUserService.addUser(username, password).then(result => {
+        if (result) {
+            res.status(200).json({ message: 'User added' });
+        } else {
+            res.status(400).json({ message: 'failed to add user' });
+        }
+    }).catch(error => {
+        console.error(error);
+        res.status(500).json({ message: 'database error' });
+    })
 });
 
 app.post('/api/logout', (req, res, next) => {
