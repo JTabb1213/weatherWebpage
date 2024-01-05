@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import {useHttpClient} from "../HttpClient";
-
 
 
 function Map({ city }) {

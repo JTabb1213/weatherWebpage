@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import {useEffect, useState} from "react";
 import {useHttpClient} from "../HttpClient";
 
 
@@ -24,7 +24,7 @@ function Weather({ city }) {
     return (
         <>
             {weather ?
-                <div className="weather">
+                <div className="weather" style={{padding: '80px'}}>
                     <h1 className="city">City: {weather.name && weather.name}</h1>
                     <h2 className="temp">Temp: {weather.main && Math.round(weather.main.temp) + " F"}</h2>
                     <h3 className="humidity">Humidity: {weather.main && weather.main.humidity + " % humidity"}</h3>
