@@ -34,7 +34,7 @@ function CityInfo() {
                         <Button fullWidth variant="contained" onClick={handleSearch}>Search</Button>
                     </Grid>
                 </Grid>
-                <Grid item sx={{marginTop: '100px'}} >
+                {city && <Grid item sx={{marginTop: '100px'}} >
                     <Paper elevation={1}>
                         <Grid item container alignItems="center" justifyContent="center" spacing={5}>
                         <Grid item>
@@ -45,7 +45,7 @@ function CityInfo() {
                         </Grid>
                         </Grid>
                     </Paper>
-                </Grid>
+                </Grid>}
 
             </Grid>
 
