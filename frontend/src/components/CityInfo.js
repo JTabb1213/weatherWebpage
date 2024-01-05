@@ -36,11 +36,11 @@ function CityInfo() {
                 </Grid>
                 {city && <Grid item sx={{marginTop: '100px'}} >
                     <Paper elevation={1}>
-                        <Grid item container alignItems="center" justifyContent="center" spacing={5}>
-                        <Grid item>
+                        <Grid item container alignItems="center" justifyContent="center" spacing={5} xs={12}>
+                        <Grid item container sx={{paddingTop: '0px !important', minHeight: '400px', minWidth: '400px'}} xs={6}>
                             <Weather city={city} />
                         </Grid>
-                        <Grid item sx={{paddingTop: '0px !important'}}>
+                        <Grid item container sx={{paddingTop: '0px !important', minHeight: '400px', minWidth: '400px'}} xs={6}>
                             <Map city={city} />
                         </Grid>
                         </Grid>
