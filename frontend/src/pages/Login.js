@@ -1,4 +1,4 @@
-import {Alert, Box, Button, CircularProgress, Grid, Paper, TextField} from "@mui/material";
+import {Alert, Box, Button, CircularProgress, Container, Grid, Paper, TextField} from "@mui/material";
 import {useState} from "react";
 import styles from '../css/login.module.css';
 import {useHttpClient} from "../HttpClient";
@@ -52,13 +52,14 @@ export default function Login() {
         });
     }
 
-    return <div className={styles.mainContainer}>
-        <Paper elevation={5} sx={{width: { xs: "75%", sm: '50%', md: '50%', lg: '35%' }, padding: '40px', marginTop: '200px'}}>
-        <Box>
+    return <div>
+        <Container sx={{width: { xs: "90%", sm: '60%', md: '60%', lg: '50%', xl: '35%' }, marginTop: '200px'}}>
+        <Paper elevation={5} sx={{padding: '40px'}}>
             <Grid container
                   alignItems="center"
                   justifyContent="center"
                   spacing={2}>
+
                 <Grid item align="center"
                       xs={12}>
                     <Box sx={{ m: 1, position: 'relative' }}>
@@ -106,13 +107,14 @@ export default function Login() {
                         <a onClick={() => alert('TODO: Need to handle forgot password')}>Forgot password?</a>
                     </Grid>
                     <Grid item container xs={12} md={6} justifyContent={{lg: 'end', md: 'end', sm: 'start', xs: 'start'}}>
-                        <a onClick={onCreateUser}>Don't have an account? Sign Up</a>
+                        <a sx={{textWrap: 'nowrap'}} onClick={onCreateUser}>Don't have an account? Sign Up</a>
                     </Grid>
                 </Grid>
-            </Grid>
 
-        </Box>
+            </Grid>
         </Paper>
+        </Container>
+
     </div>
 
 
