@@ -1,3 +1,22 @@
+html, body{
+    height: 100%;
+}
+
+body #root {
+    height: 100%;
+}
+
+a {
+    cursor: pointer;
+    margin: 0px;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-weight: 400;
+    font-size: 0.875rem;
+    line-height: 1.43;
+    letter-spacing: 0.01071em;
+    color: rgb(25, 118, 210);
+    text-decoration: underline rgba(25, 118, 210, 0.4);
+}
 /*.container {
     border: 1px solid black;
     margin: 1rem;
