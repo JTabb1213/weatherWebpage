@@ -3,13 +3,15 @@ import ReactDOM from 'react-dom/client';
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import ThunderstormIcon from '@mui/icons-material/Thunderstorm';
-import {BrowserRouter, Outlet, Route, Routes, useNavigate, useSearchParams} from "react-router-dom";
+import {BrowserRouter, Outlet, Route, Routes, useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import {AppBar, Box, Button, IconButton, Toolbar, Typography} from "@mui/material";
 import {useHttpClient} from "./HttpClient";
+import Register from "./pages/Register";
 
 function AppLayout() {
     const httpClient = useHttpClient();
     const navigate = useNavigate();
+    const location = useLocation();
     const [searchParams, setSearchParams] = useSearchParams();
 
     const handleLogout = () => {
@@ -20,7 +22,7 @@ function AppLayout() {
             }
         }).then(result => {
             //const originalUrl = searchParams.get('original_url') || '/';
-            navigate('');
+            navigate(location.href, { replace: true });
         }).catch(err => {
             console.error("logout failed", err)
         })
@@ -64,6 +66,7 @@ export default function App() {
                     <Route index element={<Home />} />
                 </Route>
                 <Route path="login" element={<Login />} />
+                <Route path="register" element={<Register />} />
             </Routes>
         </BrowserRouter>
     );

@@ -2,17 +2,19 @@ import {Alert, Box, Button, CircularProgress, Container, Grid, Paper, TextField}
 import {useState} from "react";
 import styles from '../css/login.module.css';
 import {useHttpClient} from "../HttpClient";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import { green } from '@mui/material/colors';
 
 export default function Login() {
     const httpClient = useHttpClient();
     const navigate = useNavigate();
+    const location = useLocation();
     const [searchParams, setSearchParams] = useSearchParams();
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState();
     const [working, setWorking] = useState();
+
     const onButtonClick = () => {
         setError(null);
         setWorking(true);
@@ -24,8 +26,8 @@ export default function Login() {
                 "Content-Type": "application/x-www-form-urlencoded"
             }
         }).then(result => {
-            const originalUrl = searchParams.get('original_url') || '/';
-            navigate(originalUrl);
+            const redirectUrl = searchParams.get('redirect_url') || '/';
+            navigate(redirectUrl);
         }).catch(err => {
             setError(err.response.data.message);
         }).finally(() => {
@@ -33,22 +35,10 @@ export default function Login() {
         })
     }
 
-    const onCreateUser = () => {
-        httpClient.post('/api/createUser', {
-            username: username,
-            password: password
-        }, {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded"
-            }
-        }).then(result => {
-            if (result.data === 'user not added') {
-                console.log('User not created');
-            } else {
-                console.log('user created');
-            }
-        }).catch(err => {
-            console.error('Error: ', err.message);
+    const onRegisterClicked = () => {
+        navigate({
+            pathname: '/register',
+            search: `?redirect_url=${location.pathname}${location.search}`,
         });
     }
 
@@ -107,7 +97,7 @@ export default function Login() {
                         <a onClick={() => alert('TODO: Need to handle forgot password')}>Forgot password?</a>
                     </Grid>
                     <Grid item container xs={12} md={6} justifyContent={{lg: 'end', md: 'end', sm: 'start', xs: 'start'}}>
-                        <a sx={{textWrap: 'nowrap'}} onClick={onCreateUser}>Don't have an account? Sign Up</a>
+                        <a onClick={onRegisterClicked} sx={{textWrap: 'nowrap'}}>Don't have an account? Sign Up</a>
                     </Grid>
                 </Grid>
 

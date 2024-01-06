@@ -23,7 +23,7 @@ export const useHttpClient = () => {
             if (error.response.status === 401 && currentPathname !== '/login') {
                 navigate({
                     pathname: '/login',
-                    search: `original_url=${location.pathname}${location.search}`,
+                    search: `redirect_url=${location.pathname}${location.search}`,
                 })
             }
             return Promise.reject(error);

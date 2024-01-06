@@ -8,8 +8,6 @@ const cors = require('cors');
 const redis = require('redis');
 const connectRedis = require('connect-redis');
 var bodyParser = require('body-parser');
-const { findUsernameAndPassword, closeConnection } = require('./databaseSearch');
-const { addUser, endConnection } = require('./addUser');
 const REDIS_HOST = process.env.REDIS_HOST || 'localhost';
 const REDIS_PORT = process.env.REDIS_PORT || 6379;
 const REDIS_USERNAME = process.env.REDIS_USERNAME;
@@ -117,7 +115,7 @@ app.post('/api/login', async (req, res, next) => {
         if (!result) {
             res.status(404).json({ message: "User not found" });
         } else {
-            req.session.user = result;
+            req.session.user = result.dataValues;
             res.status(200).json(result);
         }
     }).catch(error => {
@@ -130,11 +128,7 @@ app.post('/api/createUser', async (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
     userService.createUser(username, password).then(result => {
-        if (result) {
-            res.status(200).json({ message: 'User added' });
-        } else {
-            res.status(400).json({ message: 'failed to add user' });
-        }
+        res.status(201).json({ message: 'User added' });
     }).catch(error => {
         console.error(error);
         res.status(500).json({ message: 'database error' });

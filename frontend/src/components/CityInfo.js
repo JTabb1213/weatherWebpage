@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useEffect, useState} from 'react'
 import Weather from "./Weather";
 import Map from "./Map";
 import {useSearchParams} from "react-router-dom";
@@ -7,8 +7,15 @@ import {Button, Grid, Paper, TextField} from "@mui/material";
 
 function CityInfo() {
     const [searchParams, setSearchParams] = useSearchParams();
-    const [city, setCity] = useState(searchParams.get("city") || "");
-    const [cityInput, setCityInput] = useState(searchParams.get("city") || "");
+    const [city, setCity] = useState();
+    const [cityInput, setCityInput] = useState();
+
+    useEffect(() => {
+        const cityFromSearch = searchParams.get("city");
+        setCity(cityFromSearch);
+        setCityInput(cityFromSearch || "");
+    }, [searchParams]);
+
     const handleSearch = (e) => {
         e.preventDefault();
         setSearchParams(params => {
@@ -26,7 +33,7 @@ function CityInfo() {
                         sx={{backgroundColor: '#fff'}}
                         variant="outlined"
                         label="City"
-                        defaultValue={cityInput}
+                        value={cityInput}
                         onChange={e => setCityInput(e.currentTarget.value)}
                     />
                     </Grid>
