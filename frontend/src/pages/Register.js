@@ -8,14 +8,11 @@ import styles from "../css/login.module.css";
 export default function Register() {
     const httpClient = useHttpClient();
     const navigate = useNavigate();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState();
     const [working, setWorking] = useState();
-
-
-
     const onSignUp = () => {
         httpClient.post('/api/createUser', {
             username: username,
@@ -26,6 +23,11 @@ export default function Register() {
         }).catch(err => {
             setError(err.message);
         });
+    }
+
+    const onSigninClicked = () => {
+        const redirect = searchParams.get('redirect_url') || '/';
+        navigate(redirect)
     }
 
     return <div>
@@ -78,6 +80,11 @@ export default function Register() {
                     </Grid>
                     <Grid item xs={12}>
                         <Button fullWidth variant="contained" onClick={onSignUp}>SIGN UP</Button>
+                    </Grid>
+                    <Grid container item xs={12} direction="row" spacing={1} justifyContent="start">
+                        <Grid item>
+                            <a onClick={onSigninClicked}>Already have an account? Sign In</a>
+                        </Grid>
                     </Grid>
                 </Grid>
             </Paper>

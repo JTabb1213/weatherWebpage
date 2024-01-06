@@ -3,13 +3,13 @@ import {useState} from "react";
 import styles from '../css/login.module.css';
 import {useHttpClient} from "../HttpClient";
 import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
-import { green } from '@mui/material/colors';
+import {green, red} from '@mui/material/colors';
 
 export default function Login() {
     const httpClient = useHttpClient();
     const navigate = useNavigate();
     const location = useLocation();
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState();
