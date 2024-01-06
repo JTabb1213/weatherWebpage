@@ -61,7 +61,7 @@ export default function Register() {
 
                     <Grid item xs={12} align="center">
                         <div className={styles.title}>New Account</div>
-                        <div className={styles.subtitle}>Get city and weather from Big Gay Jacks's Weather App</div>
+                        <div className={styles.subtitle}>Get city and weather from Jacks's Big Gay Weather App</div>
                     </Grid>
 
                     {error && <Grid item xs={12}>
