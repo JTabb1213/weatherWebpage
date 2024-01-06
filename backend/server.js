@@ -2,8 +2,7 @@ const express = require('express');
 const weatherService = require('./services/weather');
 const locationService = require('./services/location');
 const mapService = require('./services/map');
-const addUserService = require('./databases/servicesDatabase/addUser');
-const searchUser = require('./databases/servicesDatabase/searchUser');
+const userService = require('./services/users');
 const session = require('express-session');
 const cors = require('cors');
 const redis = require('redis');
@@ -114,11 +113,11 @@ app.post('/api/login', async (req, res, next) => {
         return res.status(400).json({ message: 'Missing username or password' });
     }
 
-    searchUser.findUsernameAndPassword(username, password).then(result => {
+    userService.findUser(username, password).then(result => {
         if (!result) {
             res.status(404).json({ message: "User not found" });
         } else {
-            console.log("user found");
+            req.session.user = result;
             res.status(200).json(result);
         }
     }).catch(error => {
@@ -130,7 +129,7 @@ app.post('/api/login', async (req, res, next) => {
 app.post('/api/createUser', async (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
-    addUserService.addUser(username, password).then(result => {
+    userService.createUser(username, password).then(result => {
         if (result) {
             res.status(200).json({ message: 'User added' });
         } else {

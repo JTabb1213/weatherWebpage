@@ -2,9 +2,7 @@
   "providers": {
     "weather": "weatherapi",
     "location": "googleapi",
-    "map": "googlemapapi"
-  },
-  "databases": {
-    "userAndPassword": "postgreSQL"
+    "map": "googlemapapi",
+    "database" : "postgres"
   }
 }
