@@ -1,5 +1,5 @@
 import {useHttpClient} from "../HttpClient";
-import {useNavigate, useSearchParams} from "react-router-dom";
+import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import {useState} from "react";
 import {Alert, Box, Button, CircularProgress, Container, Grid, Paper, TextField} from "@mui/material";
 import {green} from "@mui/material/colors";
@@ -8,26 +8,26 @@ import styles from "../css/login.module.css";
 export default function Register() {
     const httpClient = useHttpClient();
     const navigate = useNavigate();
+    const location = useLocation();
     const [searchParams] = useSearchParams();
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [error, setError] = useState();
     const [working, setWorking] = useState();
+    const redirectUrl = searchParams.get('redirect_url');
     const onSignUp = () => {
         httpClient.post('/api/createUser', {
             username: username,
             password: password
         }, ).then(result => {
-            const redirectUrl = searchParams.get('redirect_url') || '/';
-            navigate(redirectUrl);
+            navigate(redirectUrl || '/');
         }).catch(err => {
             setError(err.message);
         });
     }
 
     const onSigninClicked = () => {
-        const redirect = searchParams.get('redirect_url') || '/';
-        navigate(redirect)
+        navigate(redirectUrl || '/login');
     }
 
     return <div>

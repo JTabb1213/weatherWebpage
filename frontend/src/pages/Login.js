@@ -1,8 +1,8 @@
 import {Alert, Box, Button, CircularProgress, Container, Grid, Paper, TextField} from "@mui/material";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import styles from '../css/login.module.css';
 import {useHttpClient} from "../HttpClient";
-import {useLocation, useNavigate, useSearchParams} from "react-router-dom";
+import {redirect, useLocation, useNavigate, useSearchParams} from "react-router-dom";
 import {green, red} from '@mui/material/colors';
 
 export default function Login() {
@@ -14,7 +14,7 @@ export default function Login() {
     const [password, setPassword] = useState("")
     const [error, setError] = useState();
     const [working, setWorking] = useState();
-
+    const redirectUrl = searchParams.get('redirect_url');
     const onButtonClick = () => {
         setError(null);
         setWorking(true);
@@ -26,8 +26,7 @@ export default function Login() {
                 "Content-Type": "application/x-www-form-urlencoded"
             }
         }).then(result => {
-            const redirectUrl = searchParams.get('redirect_url') || '/';
-            navigate(redirectUrl);
+            navigate(redirectUrl || '/');
         }).catch(err => {
             setError(err.response.data.message);
         }).finally(() => {
@@ -38,7 +37,7 @@ export default function Login() {
     const onRegisterClicked = () => {
         navigate({
             pathname: '/register',
-            search: `?redirect_url=${location.pathname}${location.search}`,
+            search: redirectUrl ?`?redirect_url=${location.pathname}${location.search}` : ''
         });
     }
 
