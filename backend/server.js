@@ -8,6 +8,8 @@ const cors = require('cors');
 const redis = require('redis');
 const connectRedis = require('connect-redis');
 var bodyParser = require('body-parser');
+const weatherRefreshService = require('./addCitiesToDB');
+
 const REDIS_HOST = process.env.REDIS_HOST || 'localhost';
 const REDIS_PORT = process.env.REDIS_PORT || 6379;
 const REDIS_USERNAME = process.env.REDIS_USERNAME;
@@ -70,6 +72,9 @@ app.get('/api/map', isLoggedIn, (req, res) => {
     if (!city) {
         return res.status(400).send('The request is missing a city');
     }
+
+
+
     mapService.getMapUrl(city).then(result => {
         if (!result) {
             return res.status(404).json({ message: 'City not found, or there were more than 1 candidates' });
@@ -78,6 +83,7 @@ app.get('/api/map', isLoggedIn, (req, res) => {
             mapUrl: result
         });
     })
+
 })
 
 
@@ -88,11 +94,18 @@ app.get('/api/weather', isLoggedIn, (req, res) => {
     if (!city) {
         return res.status(400).send('The request is missing a city');
     }
-    weatherService.getWeather(city, units).then(result => {
-        res.json(result);
-    }).catch(err => {
-        res.status(err.response.status).json({ message: err.response.statusText });
-    });
+
+    userService.getWeather(city).then(result => {
+        if (!result) {
+            res.status(404).json({ message: "City not found" });
+        } else {
+            console.log(result);
+            res.status(200).json(result);
+        }
+    }).catch(error => {
+        console.error(error);
+        res.status(500).json({ message: "database error" });
+    })
 });
 
 app.get('/api/geolocation', isLoggedIn, (req, res) => {
@@ -115,6 +128,7 @@ app.post('/api/login', async (req, res, next) => {
         if (!result) {
             res.status(404).json({ message: "User not found" });
         } else {
+            weatherRefreshService.refreshData();
             req.session.user = result.dataValues;
             res.status(200).json(result);
         }
