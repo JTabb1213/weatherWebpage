@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import ThunderstormIcon from '@mui/icons-material/Thunderstorm';
-import {BrowserRouter, Outlet, Route, Routes, useLocation, useNavigate, useSearchParams} from "react-router-dom";
-import {AppBar, Box, Button, IconButton, Toolbar, Typography} from "@mui/material";
-import {useHttpClient} from "./HttpClient";
+//import ThunderstormIcon from '@mui/icons-material/Thunderstorm';
+import { BrowserRouter, Outlet, Route, Routes, useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { AppBar, Box, Button, IconButton, Toolbar, Typography } from "@mui/material";
+import { useHttpClient } from "./HttpClient";
 import Register from "./pages/Register";
 
 function AppLayout() {
@@ -34,14 +34,14 @@ function AppLayout() {
                 <IconButton
                     color="inherit"
                 >
-                 <ThunderstormIcon/>
+
                 </IconButton>
                 <Typography
                     variant="h6"
                     component="div"
                     sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
                 >
-                    Jack's Big Gay Weather App
+                    Jack's Weather App
                 </Typography>
                 <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                     <Button onClick={handleLogout} sx={{ color: '#fff' }}>
@@ -51,7 +51,7 @@ function AppLayout() {
             </Toolbar>
         </AppBar>
         <div className="content">
-        <Outlet/>
+            <Outlet />
         </div>
 
     </div>
@@ -75,7 +75,7 @@ export default function App() {
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     <React.StrictMode>
-        <App/>
+        <App />
     </React.StrictMode>
 );
 
